@@ -171,8 +171,8 @@ export default function PartsCabinet() {
     <>
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Parts Cabinet</h2>
-          <p className="text-gray-600 mt-1">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Parts Cabinet</h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
             Your collection of bike parts • {parts?.length || 0} parts
             {selectedParts.size > 0 && (
               <span className="ml-2 text-primary-600">
