@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function validPartData() {
+      let data = request.resource.data;
+      return data.brand is string && data.brand.size() > 0 &&
+             data.model is string && data.model.size() > 0 &&
+             data.category is string &&
+             data.price is number && data.price >= 0 &&
+             data.links is list && data.links.size() <= 10 && // Max 10 links
+             data.userId == request.auth.uid;
+    }
+
+    function validBuildData() {
+      let data = request.resource.data;
+      return data.name is string && data.name.size() > 0 &&
+             data.name.size() <= 100 && // Max 100 characters
+             data.userId == request.auth.uid;
+    }
+
+    // Parts collection
+    match /parts/{partId} {
+      // Allow read if authenticated and owner
+      allow read: if isAuthenticated() && isOwner(resource.data.userId);
+
+      // Allow create if authenticated and valid data
+      allow create: if isAuthenticated() && validPartData();
+
+      // Allow update if authenticated, owner, and valid data
+      allow update: if isAuthenticated() &&
+                       isOwner(resource.data.userId) &&
+                       validPartData();
+
+      // Allow delete if authenticated and owner
+      allow delete: if isAuthenticated() && isOwner(resource.data.userId);
+    }
+
+    // Builds collection
+    match /builds/{buildId} {
+      // Allow read if authenticated and owner
+      allow read: if isAuthenticated() && isOwner(resource.data.userId);
+
+      // Allow create if authenticated and valid data
+      allow create: if isAuthenticated() && validBuildData();
+
+      // Allow update if authenticated, owner, and valid data
+      allow update: if isAuthenticated() &&
+                       isOwner(resource.data.userId) &&
+                       validBuildData();
+
+      // Allow delete if authenticated and owner
+      allow delete: if isAuthenticated() && isOwner(resource.data.userId);
+    }
+
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
