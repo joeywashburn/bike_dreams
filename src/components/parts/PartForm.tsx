@@ -208,17 +208,17 @@ export default function PartForm({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl dark:shadow-2xl border border-gray-200 dark:border-gray-700 transition-all">
                 <div className="flex justify-between items-center mb-4">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100"
                   >
                     {mode === 'create' ? 'Add Part to Cabinet' : 'Edit Part'}
                   </Dialog.Title>
                   <button
                     onClick={handleClose}
-                    className="text-gray-400 hover:text-gray-500"
+                    className="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400"
                   >
                     <XMarkIcon className="w-6 h-6" />
                   </button>
